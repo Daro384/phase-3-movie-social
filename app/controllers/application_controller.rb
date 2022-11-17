@@ -12,6 +12,11 @@ class ApplicationController < Sinatra::Base
     user.to_json(include: {reviews: {include: :movie}})
   end
 
+  get "/user_movies/:username" do
+    user = User.find_by(username: params[:username])
+    user.movies.to_json
+  end
+
   delete "/users/:id" do
     user = User.find(params[:id])
     user.destroy_all
@@ -37,8 +42,8 @@ class ApplicationController < Sinatra::Base
     Movie.all.to_json(include: {reviews: {include: :user}})
   end
 
-  get "/movies/:id" do
-    movie = Movie.find(params[:id])
+  get "/movies/:title" do
+    movie = Movie.find_by(title: params[:title])
     movie.to_json(include: {reviews: {include: :user}})
   end
 
@@ -51,7 +56,7 @@ class ApplicationController < Sinatra::Base
   post "/movies" do
     movie = Movie.create(
       title: params[:title],
-      description: params[:description],
+      year: params[:year],
       img_url: params[:img_url]
     )
     movie.to_json
@@ -60,7 +65,7 @@ class ApplicationController < Sinatra::Base
   patch "/movies/:id" do
     movie = Movie.find(params[:id]).update(
       title: params[:title],
-      description: params[:description],
+      year: params[:year],
       img_url: params[:img_url]
     )
     movie.to_json
@@ -101,6 +106,30 @@ class ApplicationController < Sinatra::Base
       movie_id: params[:movie_id]
     )
     review.to_json
+  end
+
+  post "/watch" do
+    if Movie.find_by(title: params[:title])
+      new_review = Review.create(
+        review: nil,
+        rating: nil,
+        user: User.find_by(username: params[:username]),
+        movie: Movie.find_by(title: params[:title])
+      )
+    else
+      new_movie = Movie.create(
+        title: params[:title],
+        year: params[:year],
+        img_url: params[:img_url]
+      )
+      new_review = Review.create(
+        review: nil,
+        rating: nil,
+        user: User.find_by(username: params[:username]),
+        movie: new_movie
+      )
+    end
+    new_review.to_json
   end
   
 end

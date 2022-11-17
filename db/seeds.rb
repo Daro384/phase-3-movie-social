@@ -15,11 +15,11 @@ matthew = User.create(username: "Matthew")
 
 puts "Creating Movies..."
 
-titanic = Movie.create(title: "Titanic", description: "romantic movie about sinking ship", img_url: "...")
-star_wars = Movie.create(title: "Star Wars", description: "A war among stars", img_url: "...")
-iron_man = Movie.create(title: "Iron Man", description: "Man with hearth problems starts creating suits", img_url: "...")
-harry_potter = Movie.create(title: "Harry Potter", description: "adopted child gets abducted to a cult-like school", img_url: "...")
-godfather = Movie.create(title: "The Godfather", description: "Mafia movie", img_url: "...")
+titanic = Movie.create(title: "Titanic", year: 1997, img_url: "...")
+star_wars = Movie.create(title: "Star Wars", year: 1977, img_url: "...")
+iron_man = Movie.create(title: "Iron Man", year: 2008, img_url: "...")
+harry_potter = Movie.create(title: "Harry Potter", year: 2001, img_url: "...")
+godfather = Movie.create(title: "The Godfather", year: 1972, img_url: "...")
 
 puts "Creating Reviews..."
 
