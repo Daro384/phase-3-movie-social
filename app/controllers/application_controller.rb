@@ -109,10 +109,10 @@ class ApplicationController < Sinatra::Base
   end
 
   #in use
-  delete "/review/:username" do
+  delete "/review/:username/:movieId" do
     thisMovie = Movie.find_by(movieId: params[:movieId])
     thisUser = User.find_by(username: params[:username])
-    thisUser.reviews.where(movie: thisMovie).destroy_all
+    thisUser.reviews.where(movie: thisMovie)[0].destroy
     thisUser.to_json
   end
 
