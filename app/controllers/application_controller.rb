@@ -129,6 +129,7 @@ class ApplicationController < Sinatra::Base
       new_movie = Movie.create(
         title: params[:title],
         year: params[:year],
+        poster: params[:poster],
         genre: params[:genre],
         actors: params[:actors],
         director: params[:director],
