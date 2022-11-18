@@ -15,7 +15,16 @@ ActiveRecord::Schema.define(version: 2022_11_15_191853) do
   create_table "movies", force: :cascade do |t|
     t.string "title"
     t.integer "year"
-    t.string "img_url"
+    t.string "poster"
+    t.string "genre"
+    t.string "actors"
+    t.string "director"
+    t.string "plot"
+    t.string "rated"
+    t.string "runtime"
+    t.string "writer"
+    t.string "imdb_rating"
+    t.string "movieId"
   end
 
   create_table "reviews", force: :cascade do |t|

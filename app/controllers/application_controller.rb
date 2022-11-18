@@ -19,7 +19,7 @@ class ApplicationController < Sinatra::Base
 
   delete "/users/:id" do
     user = User.find(params[:id])
-    user.destroy_all
+    user.destroy
     user.to_json
   end
 
@@ -47,9 +47,9 @@ class ApplicationController < Sinatra::Base
     movie.to_json(include: {reviews: {include: :user}})
   end
 
-  delete "/movies/:id" do
-    movie = Movie.find(params[:id])
-    movie.destroy_all
+  delete "/movies/:movieId" do
+    movie = Movie.find_by(movieId: params[:movieId])
+    movie.destroy
     movie.to_json
   end
 
@@ -57,7 +57,7 @@ class ApplicationController < Sinatra::Base
     movie = Movie.create(
       title: params[:title],
       year: params[:year],
-      img_url: params[:img_url]
+      poster: params[:poster]
     )
     movie.to_json
   end
@@ -66,7 +66,7 @@ class ApplicationController < Sinatra::Base
     movie = Movie.find(params[:id]).update(
       title: params[:title],
       year: params[:year],
-      img_url: params[:img_url]
+      poster: params[:poster]
     )
     movie.to_json
   end
@@ -84,7 +84,7 @@ class ApplicationController < Sinatra::Base
 
   delete "/reviews/:id" do
     review = Review.find(params[:id])
-    review.destroy_all
+    review.destroy
     review.to_json
   end
 
@@ -108,8 +108,17 @@ class ApplicationController < Sinatra::Base
     review.to_json
   end
 
+  #in use
+  delete "/review/:username" do
+    thisMovie = Movie.find_by(movieId: params[:movieId])
+    thisUser = User.find_by(username: params[:username])
+    thisUser.reviews.where(movie: thisMovie).destroy_all
+    thisUser.to_json
+  end
+
+  #in use
   post "/watch" do
-    if Movie.find_by(title: params[:title])
+    if Movie.find_by(movieId: params[:movieId])
       new_review = Review.create(
         review: nil,
         rating: nil,
@@ -120,7 +129,15 @@ class ApplicationController < Sinatra::Base
       new_movie = Movie.create(
         title: params[:title],
         year: params[:year],
-        img_url: params[:img_url]
+        genre: params[:genre],
+        actors: params[:actors],
+        director: params[:director],
+        plot: params[:plot],
+        rated: params[:rated],
+        runtime: params[:runtime],
+        writer: params[:writer],
+        imdb_rating: params[:imdb_rating],
+        movieId: params[:movieId]
       )
       new_review = Review.create(
         review: nil,
